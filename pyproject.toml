@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "digital-mcp-server"
+version = "0.1.0"
+description = "MCP server for building, testing and opening Digital logic circuits"
+requires-python = ">=3.10"
+license = {text = "GPL-3.0-or-later"}
+
+[project.scripts]
+digital-mcp-server = "digital_mcp_server:main"

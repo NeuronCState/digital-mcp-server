@@ -3,11 +3,12 @@
     "digital": {
       "command": "python3",
       "args": [
-        "/Users/zhangxuanning/Downloads/Digital/mcp/digital_mcp_server.py"
+        "/Users/zhangxuanning/Downloads/digital-mcp-server/digital_mcp_server.py"
       ],
       "env": {
         "DIGITAL_JAR": "/Users/zhangxuanning/Downloads/Digital/source/target/Digital.jar",
-        "DIGITAL_JAVA": "/Users/zhangxuanning/Downloads/Digital/.runtime/desktop-runtime/bin/java"
+        "DIGITAL_JAVA": "/Users/zhangxuanning/Downloads/Digital/.runtime/desktop-runtime/bin/java",
+        "DIGITAL_APP": "/Users/zhangxuanning/Downloads/Digital/modern/dist/Digital.app"
       }
     }
   }

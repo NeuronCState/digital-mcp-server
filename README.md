@@ -11,7 +11,7 @@ the AI host while making circuit construction deterministic and testable.
 
 ## Run directly
 
-From the repository root:
+From this directory or from the repository root:
 
 ```bash
 python3 mcp/digital_mcp_server.py
@@ -24,18 +24,31 @@ Example MCP client configuration:
   "mcpServers": {
     "digital": {
       "command": "python3",
-      "args": ["/absolute/path/to/Digital/mcp/digital_mcp_server.py"],
+      "args": ["/absolute/path/to/digital-mcp-server/digital_mcp_server.py"],
       "env": {
-        "DIGITAL_JAR": "/absolute/path/to/Digital/source/target/Digital.jar"
+        "DIGITAL_JAR": "/absolute/path/to/Digital/source/target/Digital.jar",
+        "DIGITAL_APP": "/absolute/path/to/Digital/modern/dist/Digital.app"
       }
     }
   }
 }
 ```
 
-Generated files are written to `mcp/generated/`. The server uses Digital's
-headless CLI for tests and SVG export, so it can validate circuits before
-opening them in the GUI.
+Generated files are written to `generated/` when this MCP is standalone. When
+it is kept inside the Digital repository they are written to `mcp/generated/`.
+The server uses Digital's headless CLI for tests and SVG export, so it can
+validate circuits before opening them in the GUI.
+
+The MCP repository is independent of Digital. Configure the simulator with
+environment variables when the two repositories are separate:
+
+```text
+DIGITAL_PROJECT_ROOT=/path/to/Digital       # optional project root
+DIGITAL_JAR=/path/to/Digital.jar            # recommended
+DIGITAL_JAVA=/path/to/java                  # optional, Java 21 recommended
+DIGITAL_APP=/path/to/Digital.app            # needed for open=true
+DIGITAL_MCP_OUTPUT_DIR=/path/to/generated   # optional
+```
 
 For a complete build loop, call `digital_build_circuit` with `run_tests: true`,
 `render_svg: true`, and (on macOS) `open: true`. If the user supplies an image,

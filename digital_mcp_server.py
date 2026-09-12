@@ -22,8 +22,9 @@ from typing import Any
 from xml.etree import ElementTree as ET
 
 
-ROOT = Path(__file__).resolve().parents[1]
-GENERATED = ROOT / "mcp" / "generated"
+ROOT = Path(os.environ.get("DIGITAL_PROJECT_ROOT", Path(__file__).resolve().parents[1])).expanduser().resolve()
+SERVER_ROOT = Path(__file__).resolve().parent
+GENERATED = Path(os.environ.get("DIGITAL_MCP_OUTPUT_DIR", SERVER_ROOT / "generated")).expanduser().resolve()
 SAFE_NAME = re.compile(r"^[A-Za-z0-9._-]+$")
 
 
@@ -227,7 +228,12 @@ def _jar() -> Path:
     candidates = []
     if os.environ.get("DIGITAL_JAR"):
         candidates.append(Path(os.environ["DIGITAL_JAR"]).expanduser())
-    candidates += [ROOT / "source/target/Digital.jar", ROOT / "modern/dist/Digital.jar"]
+    candidates += [
+        ROOT / "source/target/Digital.jar",
+        ROOT / "modern/dist/Digital.jar",
+        ROOT / "target/Digital.jar",
+        SERVER_ROOT / "Digital.jar",
+    ]
     for path in candidates:
         if path.is_file():
             return path
@@ -274,7 +280,8 @@ def render_svg(path: Path, timeout: int) -> dict[str, Any]:
 def open_circuit(path: Path, app_path: str | None) -> dict[str, Any]:
     if sys.platform != "darwin":
         raise ToolError("digital_open_circuit currently requires macOS")
-    app = Path(app_path).expanduser() if app_path else ROOT / "modern/dist/Digital.app"
+    configured_app = os.environ.get("DIGITAL_APP")
+    app = Path(app_path or configured_app).expanduser() if (app_path or configured_app) else ROOT / "modern/dist/Digital.app"
     if not app.exists():
         raise ToolError(f"Digital.app not found: {app}")
     subprocess.Popen(["open", "-a", str(app), str(path)], cwd=ROOT)
