@@ -19,10 +19,10 @@ stdio MCP 服务。它让 MCP 客户端可以直接创建、检查、验证、�
 
 ## 安装和运行
 
-在仓库根目录运行：
+在 MCP 仓库根目录运行：
 
 ```bash
-python3 mcp/digital_mcp_server.py
+python3 digital_mcp_server.py
 ```
 
 MCP 客户端配置示例：
@@ -32,7 +32,7 @@ MCP 客户端配置示例：
   "mcpServers": {
     "digital": {
       "command": "python3",
-      "args": ["/绝对路径/Digital/mcp/digital_mcp_server.py"],
+      "args": ["/绝对路径/digital-mcp-server/digital_mcp_server.py"],
       "env": {
         "DIGITAL_PROJECT_ROOT": "/绝对路径/Digital",
         "DIGITAL_JAR": "/绝对路径/Digital/source/target/Digital.jar",
@@ -176,16 +176,15 @@ MCP 不再直接执行 `Digital.app/Contents/MacOS/Digital`。macOS 上该原生
 
 ## 生成文件位置
 
-服务独立运行时默认写入 `mcp/generated/`；如果作为独立 MCP 仓库运行，则写入
-服务目录下的 `generated/`。也可以用 `DIGITAL_MCP_OUTPUT_DIR` 自定义目录。
+独立 MCP 仓库运行时默认写入服务目录下的 `generated/`。也可以用
+`DIGITAL_MCP_OUTPUT_DIR` 自定义目录。
 
 ## 本地验证
 
 运行 Python 测试：
 
 ```bash
-python3 -m py_compile mcp/digital_mcp_server.py
-python3 -m unittest discover -s mcp -p 'test_*.py' -v
+python3 -m py_compile digital_mcp_server.py
 ```
 
 仿真快照的底层 CLI 也可以直接运行：
@@ -193,7 +192,7 @@ python3 -m unittest discover -s mcp -p 'test_*.py' -v
 ```bash
 java -Djava.awt.headless=true \
   -cp source/target/Digital.jar CLI snapshot \
-  -dig mcp/generated/motor_fault_indicator.dig \
+  -dig /绝对路径/Digital/mcp/generated/motor_fault_indicator.dig \
   -svg /tmp/motor_fault_indicator_A1_B0.svg \
   -inputs A=1,B=0 -scale 30
 ```
